@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "core",
+    "cortex",
+    "zlang",
+    "organism-bin"
+]
+
+resolver = "2"
