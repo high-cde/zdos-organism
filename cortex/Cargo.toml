@@ -1,11 +1,11 @@
 [package]
-name = "zdos-cortex"
+name = "cortex"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+rand = "0.8"
+anyhow = "1"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-tokio = { version = "1", features = ["full"] }
-zdos-zlang = { path = "../zlang" }
-zdos-zvm = { path = "../zvm" }
+reqwest = { version = "0.12", features = ["json", "blocking"] }

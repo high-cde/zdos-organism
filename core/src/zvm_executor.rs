@@ -1,21 +1,17 @@
 use serde_json::Value;
-use zdos_zlang::{parser::Parser, compiler::compile};
-use zdos_zvm::vm::ZVM;
+use serde_json::json;
 
-pub fn exec_zlang_in_core(src: &str) -> Value {
-    let mut parser = Parser::new(src);
-    let program = match parser.parse() {
-        Ok(p) => p,
-        Err(e) => return Value::String(format!("parse error: {e}")),
-    };
+pub struct ZVMExecutor;
 
-    let bytecode = compile(&program);
+impl ZVMExecutor {
+    pub fn new() -> Self {
+        ZVMExecutor
+    }
 
-    let mut vm = ZVM::new();
-    let result = vm.run(&bytecode);
-
-    serde_json::json!({
-        "result": result,
-        "vars": vm.vars
-    })
+    pub fn execute(&self, input: Value) -> Value {
+        json!({
+            "zvm_status": "ok",
+            "input": input
+        })
+    }
 }

@@ -1,9 +1,10 @@
 [workspace]
+resolver = "2"
 members = [
     "core",
     "cortex",
+    "zvm",
     "zlang",
-    "organism-bin"
+    "organism-bin",
+    "memzdos"
 ]
-
-resolver = "2"
