@@ -11,3 +11,4 @@ reqwest = { version = "0.12", features = ["json", "blocking"] }
 
 # dipendenza locale verso il cortex
 cortex = { path = "../cortex" }
+zdos-zlang = { path = "../zlang" }

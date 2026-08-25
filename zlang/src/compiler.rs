@@ -1,6 +1,6 @@
 use crate::ast::*;
-use zdos_zvm::opcode::Opcode;
 use zdos_zvm::bytecode::BytecodeProgram;
+use zdos_zvm::opcode::Opcode;
 
 pub fn compile(program: &Program) -> BytecodeProgram {
     let mut code = Vec::new();

@@ -9,7 +9,10 @@ impl MutationEngine {
         let delta: f64 = rng.gen_range(-rate..rate);
         let new = (value + delta).clamp(0.0, 1.0);
 
-        let _ = fs::write("/root/highcoin-node/mutation_cost.txt", format!("{}", rate * 10.0));
+        let _ = fs::write(
+            "/root/highcoin-node/mutation_cost.txt",
+            format!("{}", rate * 10.0),
+        );
 
         new
     }

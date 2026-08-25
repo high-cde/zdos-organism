@@ -6,9 +6,18 @@ pub struct BioFeedback {
     pub mutation_rate: f64,
 }
 
+impl Default for BioFeedback {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl BioFeedback {
     pub fn new() -> Self {
-        Self { loop_delay: 2, mutation_rate: 0.05 }
+        Self {
+            loop_delay: 2,
+            mutation_rate: 0.05,
+        }
     }
 
     pub fn update(&mut self, neuro: &NeuroSignals) {

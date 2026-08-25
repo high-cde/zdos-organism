@@ -1,5 +1,5 @@
-use anyhow::Result;
 use crate::llm::interface::LLMInterface;
+use anyhow::Result;
 use std::env;
 
 pub struct HttpLLM {

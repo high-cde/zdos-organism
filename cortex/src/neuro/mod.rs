@@ -5,9 +5,19 @@ pub struct NeuroSignals {
     pub serotonin: f64,
 }
 
+impl Default for NeuroSignals {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl NeuroSignals {
     pub fn new() -> Self {
-        Self { dopamine: 0.5, cortisol: 0.5, serotonin: 0.5 }
+        Self {
+            dopamine: 0.5,
+            cortisol: 0.5,
+            serotonin: 0.5,
+        }
     }
 
     pub fn update(&mut self, cpu: f64, net: u64, io: u64) {
@@ -23,9 +33,14 @@ impl NeuroSignals {
     }
 
     pub fn mood(&self) -> String {
-        if self.cortisol > 0.7 { "stress".into() }
-        else if self.dopamine > 0.7 { "reward".into() }
-        else if self.serotonin > 0.7 { "stable".into() }
-        else { "neutral".into() }
+        if self.cortisol > 0.7 {
+            "stress".into()
+        } else if self.dopamine > 0.7 {
+            "reward".into()
+        } else if self.serotonin > 0.7 {
+            "stable".into()
+        } else {
+            "neutral".into()
+        }
     }
 }

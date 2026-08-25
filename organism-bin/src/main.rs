@@ -1,80 +1,121 @@
-use std::time::Duration;
-use std::fs;
+use anyhow::{Context, Result};
+use std::{env, fs, path::PathBuf, thread, time::Duration};
 
 mod bio_sensors;
 use bio_sensors::*;
-
 use cortex::bio::ReactiveCortex;
-use cortex::llm::http::HttpLLM;
-use cortex::neuro::NeuroSignals;
-use cortex::feedback::BioFeedback;
-use cortex::mutation::MutationEngine;
-use cortex::evolution::EvolutionEngine;
 use cortex::comm::{BioComm, BioPacket};
+use cortex::evolution::EvolutionEngine;
+use cortex::feedback::BioFeedback;
+use cortex::llm::http::HttpLLM;
+use cortex::mutation::MutationEngine;
+use cortex::neuro::NeuroSignals;
 use cortex::optimization::OptimizerState;
 
-fn main() {
-    let llm = HttpLLM::new("http://127.0.0.1:8080/llm");
-    let cortex = ReactiveCortex::new(llm);
-
-    let mut neuro = NeuroSignals::new();
-    let mut feedback = BioFeedback::new();
-    let mut fitness_score = 0.5;
-    let mut optimizer = OptimizerState::load();
-
+fn main() -> Result<()> {
+    let args: Vec<String> = env::args().skip(1).collect();
+    if args.iter().any(|arg| arg == "--help" || arg == "-h") {
+        print_help();
+        return Ok(());
+    }
+    if args.iter().any(|arg| arg == "--version" || arg == "-V") {
+        println!("zdos-organism 0.1.0");
+        return Ok(());
+    }
+    if let Some(index) = args.iter().position(|arg| arg == "--eval") {
+        let source = args
+            .get(index + 1)
+            .context("--eval richiede un programma ZLang")?;
+        let result = zdos_zlang::runtime::execute(source).context("esecuzione ZLang fallita")?;
+        println!("{}", serde_json::to_string_pretty(&result)?);
+        return Ok(());
+    }
+    let once = args.iter().any(|arg| arg == "--once");
+    let llm_url = env::var("ZDOS_LLM_URL").unwrap_or_else(|_| "http://127.0.0.1:8080/llm".into());
+    let state_dir = env::var_os("ZDOS_STATE_DIR")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from("var"));
+    fs::create_dir_all(&state_dir).context("impossibile creare ZDOS_STATE_DIR")?;
+    let mut organism = Organism::new(&llm_url, state_dir);
     loop {
-        let cpu = cpu();
-        let net = net_latency();
-        let io = io_load();
-        let h = block_height();
+        organism.tick()?;
+        if once {
+            break;
+        }
+        thread::sleep(Duration::from_secs(organism.feedback.loop_delay));
+    }
+    Ok(())
+}
+
+struct Organism {
+    cortex: ReactiveCortex<HttpLLM>,
+    neuro: NeuroSignals,
+    feedback: BioFeedback,
+    optimizer: OptimizerState,
+    state_dir: PathBuf,
+    fitness_score: f64,
+}
+
+impl Organism {
+    fn new(llm_url: &str, state_dir: PathBuf) -> Self {
+        Self {
+            cortex: ReactiveCortex::new(HttpLLM::new(llm_url)),
+            neuro: NeuroSignals::new(),
+            feedback: BioFeedback::new(),
+            optimizer: OptimizerState::load(),
+            state_dir,
+            fitness_score: 0.5,
+        }
+    }
+
+    fn tick(&mut self) -> Result<()> {
+        let cpu_value = cpu();
+        let net_value = net_latency();
+        let io_value = io_load();
+        let height = block_height();
         let diff = difficulty();
         let mem = mempool();
-
-        println!(
-            "[ZDOS] 🧩 Sensors: cpu={:.2}, net={}ms, io={}, h={}, diff={}, mem={}",
-            cpu, net, io, h, diff, mem
-        );
-
-        neuro.update(cpu, net, io);
-        println!(
-            "[ZDOS] 🧬 NeuroSignals → dopamine={:.2}, cortisol={:.2}, serotonin={:.2}, mood={}",
-            neuro.dopamine, neuro.cortisol, neuro.serotonin, neuro.mood()
-        );
-
-        feedback.update(&neuro);
-
+        println!("[ZDOS] sensors cpu={cpu_value:.2} net={net_value}ms io={io_value} h={height} diff={diff} mem={mem}");
+        self.neuro.update(cpu_value, net_value, io_value);
+        self.feedback.update(&self.neuro);
         BioComm::send(BioPacket {
             source: "NEURO".into(),
-            signal: neuro.mood(),
-            level: neuro.serotonin,
+            signal: self.neuro.mood(),
+            level: self.neuro.serotonin,
             priority: 2,
-            hint: "adatta difficulty e mutation".into(),
+            hint: "adapt difficulty and mutation".into(),
         });
-
-        let new_fitness = EvolutionEngine::fitness(cpu, io, net);
-        fitness_score = new_fitness;
-        let _ = fs::write("/root/zdos-organism/fitness.txt", format!("{}", fitness_score));
-        println!("[ZDOS] 🧬 Fitness: {:.3}", fitness_score);
-
-        let mutated = MutationEngine::mutate(neuro.dopamine, feedback.mutation_rate);
-        println!("[ZDOS] 🧬 Mutation: dopamine mutated → {:.3}", mutated);
-
-        let new_diff =
-            EvolutionEngine::adjust_difficulty(diff, neuro.dopamine, neuro.cortisol, neuro.serotonin);
-        println!("[ZDOS] 🔧 Difficulty adjusted → {:.3}", new_diff);
-
-        optimizer.update(fitness_score, net as f64 / 100.0);
-        optimizer.optimize(&mut feedback.loop_delay, &mut feedback.mutation_rate);
-        println!(
-            "[ZDOS] 🔧 AutoOpt → loop_delay={}s, mutation_rate={:.3}",
-            feedback.loop_delay, feedback.mutation_rate
+        self.fitness_score = EvolutionEngine::fitness(cpu_value, io_value, net_value);
+        fs::write(
+            self.state_dir.join("fitness.txt"),
+            self.fitness_score.to_string(),
+        )
+        .context("impossibile salvare fitness")?;
+        let mutated = MutationEngine::mutate(self.neuro.dopamine, self.feedback.mutation_rate);
+        let new_diff = EvolutionEngine::adjust_difficulty(
+            diff,
+            self.neuro.dopamine,
+            self.neuro.cortisol,
+            self.neuro.serotonin,
         );
-
-        match cortex.decide(cpu, net, io, h) {
-            Ok(action) => println!("[ZDOS] 🧠 Decisione: {}", action),
-            Err(e) => println!("[ZDOS] ⚠️ Errore cortex: {e}")
+        self.optimizer
+            .update(self.fitness_score, net_value as f64 / 100.0);
+        self.optimizer.optimize(
+            &mut self.feedback.loop_delay,
+            &mut self.feedback.mutation_rate,
+        );
+        println!(
+            "[ZDOS] fitness={:.3} mutation={mutated:.3} difficulty={new_diff:.3} interval={}s",
+            self.fitness_score, self.feedback.loop_delay
+        );
+        match self.cortex.decide(cpu_value, net_value, io_value, height) {
+            Ok(action) => println!("[ZDOS] decision={action}"),
+            Err(error) => eprintln!("[ZDOS] cortex error: {error}"),
         }
-
-        std::thread::sleep(Duration::from_secs(feedback.loop_delay));
+        Ok(())
     }
+}
+
+fn print_help() {
+    println!("ZDOS Organism\n\nUSAGE:\n  organism-bin [--once]\n  organism-bin --eval <zlang>\n\nOPTIONS:\n  --once              esegue un singolo ciclo senza daemonizzare\n  --eval <program>    esegue un programma ZLang e stampa JSON\n  ZDOS_LLM_URL        endpoint LLM (default: http://127.0.0.1:8080/llm)\n  ZDOS_STATE_DIR      directory stato (default: ./var)");
 }

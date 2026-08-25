@@ -1,8 +1,11 @@
-pub mod llm;
 pub mod bio;
-pub mod neuro;
-pub mod feedback;
-pub mod mutation;
-pub mod evolution;
 pub mod comm;
+pub mod evolution;
+pub mod feedback;
+pub mod hyper_cortex;
+pub mod llm;
+pub mod mutation;
+pub mod mutation_engine;
+pub mod neuro;
 pub mod optimization;
+pub mod predictive_layer;

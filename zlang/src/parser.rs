@@ -34,10 +34,6 @@ impl Parser {
         }
     }
 
-    fn peek(&self) -> Option<&String> {
-        self.tokens.get(self.pos)
-    }
-
     pub fn parse(&mut self) -> Result<Program, ParseError> {
         let mut statements = Vec::new();
 

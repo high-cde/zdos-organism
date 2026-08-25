@@ -1,5 +1,5 @@
-use std::fs;
 use serde::{Deserialize, Serialize};
+use std::fs;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OptimizerState {

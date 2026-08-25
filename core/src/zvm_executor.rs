@@ -1,7 +1,13 @@
-use serde_json::Value;
 use serde_json::json;
+use serde_json::Value;
 
 pub struct ZVMExecutor;
+
+impl Default for ZVMExecutor {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
 impl ZVMExecutor {
     pub fn new() -> Self {

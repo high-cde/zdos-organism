@@ -4,6 +4,10 @@ use crate::hyper_cortex::HyperCortex;
 
 pub struct BioSignalRouter;
 
+impl Default for BioSignalRouter {
+    fn default() -> Self { Self::new() }
+}
+
 impl BioSignalRouter {
     pub fn new() -> Self {
         BioSignalRouter

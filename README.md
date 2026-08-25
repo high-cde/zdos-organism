@@ -110,5 +110,45 @@ Il modulo **HighCoin Bridge** fornisce:
 
 ---
 
+## 🛠️ Installazione e verifica
+
+Il progetto richiede una toolchain Rust stabile. La configurazione è dichiarata in `rust-toolchain.toml` e include `rustfmt` e `clippy`.
+
+```bash
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo test --workspace --all-targets --all-features
+```
+
+## ⚙️ CLI operativa
+
+Per eseguire un programma ZLang attraverso il percorso reale parser → compiler → ZVM:
+
+```bash
+cargo run -p organism-bin -- --eval "+ 2 3"
+```
+
+Output previsto:
+
+```json
+{
+  "result": 5.0,
+  "statements": 1,
+  "status": "ok"
+}
+```
+
+Per eseguire un singolo battito dell’organismo senza avviare un loop infinito:
+
+```bash
+ZDOS_STATE_DIR=./var cargo run -p organism-bin -- --once
+```
+
+La modalità daemon resta disponibile senza `--once`. L’endpoint del cortex può essere configurato con `ZDOS_LLM_URL`; la directory dello stato persistente con `ZDOS_STATE_DIR`, che per impostazione predefinita è `./var`. Il processo non richiede più percorsi hard-coded sotto `/root`.
+
+## ✅ Stato del prodotto
+
+Il repository è ora compilabile con Rust stabile e la CI verifica automaticamente formattazione, Clippy, test e smoke test CLI. ZLang esegue effettivamente il bytecode ZVM; la macchina virtuale segnala underflow, divisione per zero e superamento del limite di istruzioni tramite errori tipizzati. Il loop dell’organismo supporta un ciclo singolo, stato locale portabile e configurazione dell’endpoint LLM via ambiente.
+
 ## 📝 Licenza
 MIT License.

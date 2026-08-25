@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Expr {
@@ -13,10 +13,7 @@ pub enum Expr {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Statement {
-    Let {
-        name: String,
-        value: Expr,
-    },
+    Let { name: String, value: Expr },
     Expr(Expr),
 }
 

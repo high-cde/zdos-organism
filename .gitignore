@@ -6,3 +6,22 @@
 *.old
 *.swp
 .DS_Store
+
+# Local Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Local runtime state
+fitness.txt
+*.state
+.env
+.env.*
+!.env.example
+
+# Generated site/build output
+/public/
+/site/.build/

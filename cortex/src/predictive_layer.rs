@@ -1,14 +1,20 @@
-use serde_json::Value;
 use serde_json::json;
+use serde_json::Value;
 
 pub struct PredictiveLayer;
+
+impl Default for PredictiveLayer {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
 impl PredictiveLayer {
     pub fn new() -> Self {
         PredictiveLayer
     }
 
-    pub fn predict(&self, signal: &Value) -> Value {
+    pub fn predict(&self, _signal: &Value) -> Value {
         json!({
             "activation": {
                 "visual": 0.82,

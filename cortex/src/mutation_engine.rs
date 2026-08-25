@@ -2,6 +2,12 @@ use serde_json::Value;
 
 pub struct MutationEngine;
 
+impl Default for MutationEngine {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl MutationEngine {
     pub fn new() -> Self {
         MutationEngine

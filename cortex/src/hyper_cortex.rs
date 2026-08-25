@@ -1,11 +1,16 @@
-use serde_json::Value;
-use serde_json::json;
-use crate::predictive_layer::PredictiveLayer;
 use crate::mutation_engine::MutationEngine;
+use crate::predictive_layer::PredictiveLayer;
+use serde_json::{json, Value};
 
 pub struct HyperCortex {
     predictive: PredictiveLayer,
     engine: MutationEngine,
+}
+
+impl Default for HyperCortex {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl HyperCortex {
