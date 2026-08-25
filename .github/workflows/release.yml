@@ -1,0 +1,50 @@
+name: ZDOS Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag release, ad esempio v0.1.0'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Cache Cargo
+        uses: Swatinem/rust-cache@v2
+      - name: Quality gate
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --workspace --all-targets --all-features -- -D warnings
+          cargo test --workspace --all-targets --all-features
+      - name: Build release binary
+        run: cargo build -p organism-bin --release
+      - name: Package binary
+        run: |
+          mkdir -p dist
+          cp target/release/organism-bin dist/organism-bin-linux-x86_64
+          sha256sum dist/organism-bin-linux-x86_64 > dist/SHA256SUMS
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          body_path: docs/RELEASE_NOTES_0.1.0.md
+          files: |
+            dist/organism-bin-linux-x86_64
+            dist/SHA256SUMS

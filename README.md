@@ -13,28 +13,28 @@
 ---
 
 ## 🧬 Overview
-**ZDOS Organism** è un sistema computazionale avanzato che integra modelli bio‑ispirati, architetture adattive e un metabolismo blockchain basato su HighCoin.  
+**ZDOS Organism** è un sistema computazionale avanzato che integra modelli bio‑ispirati, architetture adattive e un metabolismo blockchain basato su HighCoin.
 Il progetto implementa un **organismo computazionale** capace di percepire, reagire, adattarsi, evolvere e ottimizzarsi in tempo reale.
 
-Documentazione completa:  
-- **[Whitepaper ufficiale](ca://s?q=Whitepaper_professionale)**  
-- **[Libro tecnico 200+ pagine](ca://s?q=Whitepaper_esteso)**  
-- **[Appendici tecniche](ca://s?q=Mostra_strutture_dati)**  
+Documentazione completa:
+- **[Overview tecnica](docs/OVERVIEW.md)**
+- **[Architettura del runtime](docs/wiki/Architecture.md)**
+- **[Release notes](docs/RELEASE_NOTES_0.1.0.md)**
 
 ---
 
 ## 🧠 Architettura del Sistema
 L’ecosistema è composto da moduli indipendenti e cooperanti:
 
-- **[Cortex Reattivo](ca://s?q=Mostra_Cortex_Reattivo)** — centro decisionale  
-- **[NeuroSignals](ca://s?q=Mostra_NeuroSignals)** — dopamina, cortisolo, serotonina  
-- **[BioFeedback](ca://s?q=Mostra_BioFeedback)** — omeostasi interna  
-- **[Mutation Engine](ca://s?q=Mostra_Mutation_Engine)** — micro‑evoluzione  
-- **[Evolution Engine](ca://s?q=Mostra_Evolution_Engine)** — fitness e selezione  
-- **[BioComm Avanzato](ca://s?q=Mostra_BioComm_Avanzato)** — linguaggio interno  
-- **[Optimizer](ca://s?q=Mostra_Optimizer)** — auto‑ottimizzazione continua  
-- **[HighCoin Bridge](ca://s?q=Mostra_HighCoin_Bridge)** — metabolismo blockchain  
-- **[Identity Core](ca://s?q=Mostra_Identity_Core)** — stato persistente  
+- **Cortex Reattivo** — centro decisionale e bridge LLM (`cortex/`)
+- **NeuroSignals** — segnali neuro-computazionali (`cortex/src/neuro/`)
+- **BioFeedback** — omeostasi interna (`cortex/src/feedback/`)
+- **Mutation Engine** — micro-evoluzione (`cortex/src/mutation_engine.rs`)
+- **Evolution Engine** — fitness e selezione (`cortex/src/`)
+- **ZLang / ZVM** — linguaggio interno e macchina virtuale (`zlang/`, `zvm/`)
+- **Optimizer** — auto-ottimizzazione (`cortex/src/optimization/`)
+- **HighCoin Bridge** — integrazione sperimentale (`cortex/src/`)
+- **Identity Core** — stato persistente e memoria (`memzdos/`)
 
 ---
 
@@ -48,14 +48,14 @@ Ogni ciclo rappresenta un **battito vitale** dell’organismo.
 ---
 
 ## ⚡ Funzionalità Principali
-- Percezione sensori (CPU, IO, rete, blockchain)  
-- Neuro‑modulazione computazionale  
-- Evoluzione parametrica  
-- Difficulty dinamica su HighCoin  
-- Reward adattiva  
-- Auto‑ottimizzazione persistente  
-- Linguaggio interno strutturato (BioComm)  
-- Identità computazionale persistente  
+- Percezione sensori (CPU, IO, rete, blockchain)
+- Neuro‑modulazione computazionale
+- Evoluzione parametrica
+- Difficulty dinamica su HighCoin
+- Reward adattiva
+- Auto‑ottimizzazione persistente
+- Linguaggio interno strutturato (BioComm)
+- Identità computazionale persistente
 
 ---
 
@@ -95,18 +95,18 @@ systemctl restart highcoin.service
 ## 🔗 Integrazione Blockchain
 Il modulo **HighCoin Bridge** fornisce:
 
-- difficulty dinamica  
-- reward adattiva  
-- costo metabolico delle mutazioni  
-- feedback economico  
+- difficulty dinamica
+- reward adattiva
+- costo metabolico delle mutazioni
+- feedback economico
 
 ---
 
 ## 📚 Documentazione
-- **[Whitepaper ufficiale](ca://s?q=Whitepaper_professionale)**  
-- **[Book completo 200+ pagine](ca://s?q=Whitepaper_esteso)**  
-- **[Glossario tecnico](ca://s?q=Mostra_glossario_esteso)**  
-- **[API interne](ca://s?q=Crea_documentazione_API)**  
+- **[Overview tecnica](docs/OVERVIEW.md)**
+- **[Wiki tecnica](docs/wiki/Home.md)**
+- **[Deployment](docs/DEPLOYMENT.md)**
+- **[Changelog](CHANGELOG.md)**
 
 ---
 
@@ -149,6 +149,25 @@ La modalità daemon resta disponibile senza `--once`. L’endpoint del cortex pu
 ## ✅ Stato del prodotto
 
 Il repository è ora compilabile con Rust stabile e la CI verifica automaticamente formattazione, Clippy, test e smoke test CLI. ZLang esegue effettivamente il bytecode ZVM; la macchina virtuale segnala underflow, divisione per zero e superamento del limite di istruzioni tramite errori tipizzati. Il loop dell’organismo supporta un ciclo singolo, stato locale portabile e configurazione dell’endpoint LLM via ambiente.
+
+## 🌐 Documentazione pubblica
+
+- **[Wiki Home](docs/wiki/Home.md)** — ingresso principale alla documentazione.
+- **[Architettura](docs/wiki/Architecture.md)** — crate, flusso dei segnali e confini del runtime.
+- **[Guida operativa](docs/wiki/Operations.md)** — installazione, CLI, configurazione e troubleshooting.
+- **[Deployment](docs/DEPLOYMENT.md)** — staging, produzione, systemd e rollback.
+- **[Roadmap](docs/wiki/Roadmap.md)** — milestone e criteri di completamento.
+- **[Changelog](CHANGELOG.md)** — cronologia delle modifiche.
+- **[Release notes v0.1.0](docs/RELEASE_NOTES_0.1.0.md)** — note della foundation release.
+
+## 🚦 Stato pubblico
+
+| Superficie | Stato | Scopo |
+|---|---|---|
+| CI | Attiva | Format, Clippy, test e smoke test CLI |
+| GitHub Pages | Attivabile da Actions | Pubblicazione automatica della documentazione |
+| GitHub Releases | Automatizzata su tag `v*.*.*` | Binario Linux, checksum e note di rilascio |
+| Runtime | Foundation / staging | ZLang, ZVM, sensori e cortex configurabile |
 
 ## 📝 Licenza
 MIT License.

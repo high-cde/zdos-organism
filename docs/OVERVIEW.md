@@ -2,33 +2,39 @@
 
 ## Scopo
 
-Runtime Python sperimentale per modellare ZDOS come organismo digitale modulare, osservabile e componibile. Questa overview definisce il contesto operativo del repository, il suo ruolo nell'ecosistema e le convenzioni minime da seguire durante l'evoluzione del progetto.
+ZDOS Organism è un runtime Rust sperimentale per modellare ZDOS come organismo digitale modulare, osservabile e componibile. Questa overview definisce il contesto operativo, il ruolo del repository nell’ecosistema e i quality gate necessari per l’evoluzione verso un prodotto di staging.
 
 ## Contesto architetturale
 
-Il repository è collegato alla visione **ZDOS / Z-GENESIS**, dove ogni componente dovrebbe avere un ruolo esplicito, dipendenze documentate e una superficie operativa comprensibile. La priorità è mantenere il progetto semplice da analizzare, sicuro da estendere e coerente con gli altri moduli.
+Il repository è collegato alla visione **ZDOS / Z-GENESIS**, dove ogni componente deve avere un ruolo esplicito, dipendenze documentate e una superficie operativa comprensibile. Il percorso principale usa Cargo workspace; Python e Shell restano strumenti ausiliari e non costituiscono il runtime canonico.
 
 | Dimensione | Indicazione |
 |---|---|
 | Identità | `high-cde/zdos-organism` |
-| Tecnologia principale | Python |
-| Stato repository | Repository principale |
-| Visibilità | PUBLIC |
+| Tecnologia principale | Rust stable |
+| Componenti | `core`, `cortex`, `zvm`, `zlang`, `organism-bin`, `memzdos` |
+| Stato repository | Foundation release / staging |
+| Visibilità | Public |
+| Versione documentata | `0.1.0-foundation` |
 
-## Convenzioni operative
+## Contratto operativo
 
-Ogni modifica dovrebbe essere piccola, tracciabile e accompagnata da una nota nel README o nella wiki quando introduce nuove funzionalità. Le configurazioni sensibili non devono essere versionate; per credenziali e token è necessario usare variabili d'ambiente o secret manager.
+La CLI deve supportare un’esecuzione locale deterministica di ZLang con `--eval` e un battito osservabile dell’organismo con `--once`. Il servizio LLM è opzionale per la verifica del runtime e viene configurato con `ZDOS_LLM_URL`; lo stato locale usa `ZDOS_STATE_DIR`. Nessuna di queste configurazioni deve contenere segreti versionati.
 
 ## Qualità e manutenzione
 
-Il progetto dovrebbe evolvere verso una struttura con test automatici, controlli statici e changelog. Quando possibile, le decisioni architetturali importanti dovrebbero essere annotate nella wiki o in file `docs/ADR-*.md`.
+Ogni modifica deve passare `cargo fmt`, Clippy con warning trattati come errori e la suite `cargo test`. La CI applica questi controlli su push e pull request. Le decisioni architetturali importanti devono essere annotate nella wiki o in file `docs/ADR-*.md`; le modifiche utente devono aggiornare changelog e note di release.
+
+## Release e governance
+
+Le release sono attivate da tag semantici `vMAJOR.MINOR.PATCH`. Il workflow di release ricompila il binario, esegue i quality gate, genera checksum SHA-256 e pubblica le note di rilascio. GitHub Pages pubblica la documentazione dal ramo `main` e può essere avviato manualmente.
 
 ## Prossimi passi consigliati
 
 | Priorità | Azione |
 |---|---|
-| Alta | Verificare dipendenze, script di avvio e prerequisiti reali. |
-| Alta | Definire o confermare la licenza del repository. |
-| Media | Aggiungere esempi minimi di utilizzo o screenshot quando applicabile. |
-| Media | Integrare test, lint e workflow CI. |
-| Bassa | Pubblicare una roadmap con milestone e tag di release. |
+| Alta | Aggiungere metriche, health status e test di integrazione. |
+| Alta | Completare configurazione systemd e rollback di staging. |
+| Media | Estendere parser e diagnostica ZLang con posizioni sorgente. |
+| Media | Rendere il bridge LLM resiliente con timeout, retry e fallback. |
+| Bassa | Pubblicare ADR, diagrammi e report di benchmark. |
