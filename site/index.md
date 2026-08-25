@@ -4,12 +4,19 @@
 
 ## Foundation release
 
+[Scarica la ISO ZDOS x86_64 · Zlang v1](https://github.com/high-cde/ZDOS/releases/latest/download/zdos-x86_64-zlang-v1.iso)
+SHA-256: `f2f9e5003f86f7f2f0ce702b321dc55490e782341896d8b1860a8fe8c28dc023`
+
 La release `0.1.0-foundation` offre un workspace Rust stabile, una macchina virtuale ZVM con gestione degli errori, il percorso eseguibile ZLang → compiler → ZVM e una CLI con modalità `--eval` e `--once`.
 
 ```bash
 cargo test --workspace --all-targets --all-features
 cargo run -p organism-bin -- --eval "+ 2 3"
 ```
+
+## Download e compatibilità
+
+La ISO è verificata su QEMU x86_64 con boot seriale. Non è una distro general-purpose e non include un installer Windows. Per sorgenti, note e checksum consulta la [release ZDOS](https://github.com/high-cde/ZDOS/releases).
 
 ## Documentazione
 
