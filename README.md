@@ -159,6 +159,7 @@ Il repository è ora compilabile con Rust stabile e la CI verifica automaticamen
 - **[Roadmap](docs/wiki/Roadmap.md)** — milestone e criteri di completamento.
 - **[Changelog](CHANGELOG.md)** — cronologia delle modifiche.
 - **[Release notes v0.1.0](docs/RELEASE_NOTES_0.1.0.md)** — note della foundation release.
+- **[Ecosystem Status](docs/ECOSYSTEM-STATUS.md)** — ruolo, stato verificabile e integrazione con ZDOS Lab, Zlang e Z-CYBERCORE.
 
 ## 🚦 Stato pubblico
 
