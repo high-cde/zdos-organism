@@ -36,6 +36,12 @@ Il percorso ZLang è separato dal ciclo organismico ma utilizzabile dalla stessa
 source ZLang → Parser → AST → Compiler → BytecodeProgram → ZVM → JSON result
 ```
 
+Il modulo `cortex::feedback` usa questo percorso per valutare la policy
+omeostatica `BioFeedback`. I segnali neuro-computazionali sono iniettati come
+variabili numeriche (`cortisol`, `dopamine`, `serotonin`); il programma ZLang
+restituisce un valore codificato per `loop_delay` e `mutation_rate`. In caso di
+errore del runtime, il modulo mantiene un fallback Rust deterministico.
+
 ## Principi
 
 La progettazione privilegia modularità, leggibilità, sicurezza operativa e verificabilità. I componenti sperimentali devono essere isolati, configurabili tramite variabili d’ambiente e testati prima dell’uso in ambienti condivisi. Il runtime non deve incorporare segreti, path assoluti o dipendenze da directory generate.

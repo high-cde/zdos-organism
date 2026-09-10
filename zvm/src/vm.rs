@@ -81,6 +81,27 @@ impl ZVM {
                     }
                     self.stack.push(a / b);
                 }
+                Opcode::Greater | Opcode::Less | Opcode::GreaterEqual | Opcode::LessEqual => {
+                    let (a, b) = self.stack.pop_pair()?;
+                    let result = match &program.code[self.ip] {
+                        Opcode::Greater => a > b,
+                        Opcode::Less => a < b,
+                        Opcode::GreaterEqual => a >= b,
+                        Opcode::LessEqual => a <= b,
+                        _ => unreachable!(),
+                    };
+                    self.stack.push(if result { 1.0 } else { 0.0 });
+                }
+                Opcode::Jump(target) => {
+                    self.ip = *target;
+                    continue;
+                }
+                Opcode::JumpIfFalse(target) => {
+                    if self.stack.pop()? == 0.0 {
+                        self.ip = *target;
+                        continue;
+                    }
+                }
                 Opcode::Halt => break,
             }
             self.ip += 1;

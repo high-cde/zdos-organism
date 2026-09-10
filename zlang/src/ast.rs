@@ -13,8 +13,15 @@ pub enum Expr {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Statement {
-    Let { name: String, value: Expr },
+    Let {
+        name: String,
+        value: Expr,
+    },
     Expr(Expr),
+    If {
+        branches: Vec<(Expr, Vec<Statement>)>,
+        otherwise: Vec<Statement>,
+    },
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

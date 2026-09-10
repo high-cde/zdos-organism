@@ -38,6 +38,28 @@ L’ecosistema è composto da moduli indipendenti e cooperanti:
 
 ---
 
+## 🧬 BioFeedback eseguito da ZLang
+
+La logica omeostatica di `BioFeedback::update` è ora eseguita attraverso il percorso completo **ZLang → compiler → bytecode → ZVM**. I segnali `cortisol`, `dopamine` e `serotonin` vengono iniettati nel runtime come variabili numeriche e producono i parametri operativi del battito:
+
+| Stato | Condizione | `loop_delay` | `mutation_rate` |
+|---|---|---:|---:|
+| `stress` | `cortisol > 0.7` | 4 s | 0.01 |
+| `reward` | `dopamine > 0.7` | 1 s | 0.10 |
+| `stable` | `serotonin > 0.7` | 2 s | 0.03 |
+| `neutral` | nessuna condizione precedente | 2 s | 0.05 |
+
+Il programma di riferimento è disponibile in [`zlang/examples/bio_feedback.zlang`](zlang/examples/bio_feedback.zlang). Rust mantiene il controllo dell’integrazione e un fallback deterministico nel caso in cui l’esecuzione della policy ZLang fallisca.
+
+Per verificare il runtime:
+
+```bash
+cargo test --workspace --all-targets --all-features
+cargo run -p organism-bin -- --eval "+ 2 3"
+```
+
+---
+
 ## 🔬 Ciclo Vitale
 ```
 SENSING → NEURO → FEEDBACK → MUTATION → EVOLUTION → OPTIMIZATION → DECISION → LOOP

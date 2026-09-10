@@ -1,0 +1,9 @@
+if > cortisol 0.7 {
+    4010
+} else if > dopamine 0.7 {
+    1100
+} else if > serotonin 0.7 {
+    2030
+} else {
+    2050
+}

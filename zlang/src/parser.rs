@@ -18,72 +18,120 @@ impl Parser {
     pub fn new(input: &str) -> Self {
         let tokens = input
             .split_whitespace()
-            .map(|s| s.to_string())
-            .collect::<Vec<_>>();
-
+            .map(|token| token.to_string())
+            .collect();
         Self { tokens, pos: 0 }
     }
 
     fn next(&mut self) -> Option<String> {
-        if self.pos >= self.tokens.len() {
-            None
-        } else {
-            let t = self.tokens[self.pos].clone();
-            self.pos += 1;
-            Some(t)
+        let token = self.tokens.get(self.pos).cloned();
+        self.pos += usize::from(token.is_some());
+        token
+    }
+
+    fn peek(&self) -> Option<&str> {
+        self.tokens.get(self.pos).map(String::as_str)
+    }
+
+    fn expect(&mut self, expected: &str) -> Result<(), ParseError> {
+        match self.next().as_deref() {
+            Some(token) if token == expected => Ok(()),
+            Some(token) => Err(ParseError::InvalidToken(token.to_string())),
+            None => Err(ParseError::Eof),
         }
     }
 
     pub fn parse(&mut self) -> Result<Program, ParseError> {
+        Ok(Program {
+            statements: self.parse_statements(false)?,
+        })
+    }
+
+    fn parse_statements(&mut self, in_block: bool) -> Result<Vec<Statement>, ParseError> {
         let mut statements = Vec::new();
-
-        // Programma vuoto → valido
-        if self.tokens.is_empty() {
-            return Ok(Program { statements });
-        }
-
-        while let Some(tok) = self.next() {
-            if tok == "let" {
-                // let <name> = <expr>
-                let name = self.next().ok_or(ParseError::Eof)?;
-                let eq = self.next().ok_or(ParseError::Eof)?;
-                if eq != "=" {
-                    return Err(ParseError::InvalidToken(eq));
+        while let Some(token) = self.peek() {
+            if token == "}" {
+                if in_block {
+                    break;
                 }
+                return Err(ParseError::InvalidToken(token.to_string()));
+            }
+            statements.push(self.parse_statement()?);
+        }
+        if in_block {
+            self.expect("}")?;
+        }
+        Ok(statements)
+    }
 
-                let value = self.parse_expr()?;
-                statements.push(Statement::Let { name, value });
-            } else {
-                // Non è "let" → è un'espressione
+    fn parse_statement(&mut self) -> Result<Statement, ParseError> {
+        match self.next().ok_or(ParseError::Eof)?.as_str() {
+            "let" => {
+                let name = self.next().ok_or(ParseError::Eof)?;
+                self.expect("=")?;
+                Ok(Statement::Let {
+                    name,
+                    value: self.parse_expr()?,
+                })
+            }
+            "if" => self.parse_if(),
+            _ => {
                 self.pos -= 1;
-                let expr = self.parse_expr()?;
-                statements.push(Statement::Expr(expr));
+                Ok(Statement::Expr(self.parse_expr()?))
             }
         }
+    }
 
-        Ok(Program { statements })
+    fn parse_if(&mut self) -> Result<Statement, ParseError> {
+        let mut branches = Vec::new();
+        let condition = self.parse_expr()?;
+        self.expect("{")?;
+        branches.push((condition, self.parse_statements(true)?));
+        let otherwise = if self.peek() == Some("else") {
+            self.next();
+            if self.peek() == Some("if") {
+                self.next();
+                let nested = self.parse_if()?;
+                match nested {
+                    Statement::If {
+                        branches: nested_branches,
+                        otherwise,
+                    } => {
+                        branches.extend(nested_branches);
+                        otherwise
+                    }
+                    _ => unreachable!(),
+                }
+            } else {
+                self.expect("{")?;
+                self.parse_statements(true)?
+            }
+        } else {
+            Vec::new()
+        };
+        Ok(Statement::If {
+            branches,
+            otherwise,
+        })
     }
 
     fn parse_expr(&mut self) -> Result<Expr, ParseError> {
-        let tok = self.next().ok_or(ParseError::Eof)?;
-
-        // Numero
-        if let Ok(n) = tok.parse::<f64>() {
-            return Ok(Expr::Number(n));
+        let token = self.next().ok_or(ParseError::Eof)?;
+        if let Ok(number) = token.parse::<f64>() {
+            return Ok(Expr::Number(number));
         }
-
-        // Operatore binario prefix-style
-        if tok == "+" || tok == "-" || tok == "*" || tok == "/" {
+        if matches!(
+            token.as_str(),
+            "+" | "-" | "*" | "/" | ">" | "<" | ">=" | "<="
+        ) {
             let left = self.parse_expr()?;
             let right = self.parse_expr()?;
             return Ok(Expr::Binary {
-                op: tok,
+                op: token,
                 left: Box::new(left),
                 right: Box::new(right),
             });
         }
-
-        // Identificatore
-        Ok(Expr::Ident(tok))
+        Ok(Expr::Ident(token))
     }
 }

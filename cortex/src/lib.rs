@@ -8,4 +8,5 @@ pub mod mutation;
 pub mod mutation_engine;
 pub mod neuro;
 pub mod optimization;
+pub mod policy;
 pub mod predictive_layer;

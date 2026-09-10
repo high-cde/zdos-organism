@@ -9,5 +9,11 @@ pub enum Opcode {
     Sub,
     Mul,
     Div,
+    Greater,
+    Less,
+    GreaterEqual,
+    LessEqual,
+    Jump(usize),
+    JumpIfFalse(usize),
     Halt,
 }
