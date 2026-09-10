@@ -4,7 +4,7 @@ Tutte le modifiche rilevanti del progetto sono registrate in questo documento. L
 
 ## [Unreleased]
 
-Questa sezione raccoglie il lavoro successivo alla prima release foundation: telemetria strutturata, configurazione del servizio systemd, test di integrazione del cortex e documentazione dell’integrazione HighCoin.
+Questa sezione raccoglie il lavoro successivo alla prima release foundation: telemetria strutturata, configurazione del servizio systemd, test di integrazione del cortex e documentazione del runtime ZLang.
 
 ## [0.1.0-foundation] — 2026-08-25
 

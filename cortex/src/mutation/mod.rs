@@ -9,10 +9,12 @@ impl MutationEngine {
         let delta: f64 = rng.gen_range(-rate..rate);
         let new = (value + delta).clamp(0.0, 1.0);
 
-        let _ = fs::write(
-            "/root/highcoin-node/mutation_cost.txt",
-            format!("{}", rate * 10.0),
-        );
+        if let Ok(state_dir) = std::env::var("ZDOS_STATE_DIR") {
+            let _ = fs::write(
+                std::path::Path::new(&state_dir).join("mutation_cost.txt"),
+                format!("{}", rate * 10.0),
+            );
+        }
 
         new
     }

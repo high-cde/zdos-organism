@@ -1,7 +1,6 @@
 # ZDOS Organism — Bio‑Computational Adaptive System
 
 ![ZDOS](https://img.shields.io/badge/ZDOS-Organism-00ff99?style=for-the-badge&logo=linux&logoColor=white)
-![HighCoin](https://img.shields.io/badge/HighCoin-Bridge-ffcc00?style=for-the-badge&logo=bitcoin&logoColor=black)
 ![BioSystem](https://img.shields.io/badge/Bio--Computational-System-8a2be2?style=for-the-badge)
 ![Rust](https://img.shields.io/badge/Rust-1.79+-orange?style=for-the-badge&logo=rust)
 ![AutoOpt](https://img.shields.io/badge/Auto--Optimization-Enabled-00ffaa?style=for-the-badge&logo=dependabot)
@@ -13,7 +12,7 @@
 ---
 
 ## 🧬 Overview
-**ZDOS Organism** è un sistema computazionale avanzato che integra modelli bio‑ispirati, architetture adattive e un metabolismo blockchain basato su HighCoin.
+**ZDOS Organism** è un sistema computazionale avanzato che integra modelli bio‑ispirati e architetture adattive.
 Il progetto implementa un **organismo computazionale** capace di percepire, reagire, adattarsi, evolvere e ottimizzarsi in tempo reale.
 
 Documentazione completa:
@@ -33,7 +32,6 @@ L’ecosistema è composto da moduli indipendenti e cooperanti:
 - **Evolution Engine** — fitness e selezione (`cortex/src/`)
 - **ZLang / ZVM** — linguaggio interno e macchina virtuale (`zlang/`, `zvm/`)
 - **Optimizer** — auto-ottimizzazione (`cortex/src/optimization/`)
-- **HighCoin Bridge** — integrazione sperimentale (`cortex/src/`)
 - **Identity Core** — stato persistente e memoria (`memzdos/`)
 
 ---
@@ -70,11 +68,11 @@ Ogni ciclo rappresenta un **battito vitale** dell’organismo.
 ---
 
 ## ⚡ Funzionalità Principali
-- Percezione sensori (CPU, IO, rete, blockchain)
+- Percezione sensori (CPU, IO e rete)
 - Neuro‑modulazione computazionale
 - Evoluzione parametrica
-- Difficulty dinamica su HighCoin
-- Reward adattiva
+- Carico adattivo del sistema
+- Risposta omeostatica adattiva
 - Auto‑ottimizzazione persistente
 - Linguaggio interno strutturato (BioComm)
 - Identità computazionale persistente
@@ -106,21 +104,6 @@ systemctl restart zdos-organism.service
 ```bash
 journalctl -u zdos-organism.service -f
 ```
-
-### Avviare il nodo HighCoin
-```bash
-systemctl restart highcoin.service
-```
-
----
-
-## 🔗 Integrazione Blockchain
-Il modulo **HighCoin Bridge** fornisce:
-
-- difficulty dinamica
-- reward adattiva
-- costo metabolico delle mutazioni
-- feedback economico
 
 ---
 

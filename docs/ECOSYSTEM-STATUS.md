@@ -11,7 +11,7 @@
 | Workspace Rust | `VERIFIED` | `Cargo.toml`, toolchain e CI presenti |
 | ZLang/ZVM | `VERIFIED` | smoke test e test workspace dichiarati nel README |
 | Loop organismo | `FOUNDATION` | modalità `--once` e daemon documentate |
-| HighCoin bridge | `EXPERIMENTAL` | integrazione descritta come sperimentale |
+| BioFeedback ZLang | `VERIFIED` | policy omeostatica eseguita dalla ZVM |
 | Endpoint LLM | `CONFIGURABLE` | `ZDOS_LLM_URL` via ambiente |
 
 ## Verifica locale

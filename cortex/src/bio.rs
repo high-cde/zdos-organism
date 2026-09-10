@@ -11,12 +11,11 @@ impl<L: LLMInterface> ReactiveCortex<L> {
         Self { llm }
     }
 
-    pub fn decide(&self, cpu: f64, net_latency: u64, io_load: u64, height: u64) -> Result<String> {
+    pub fn decide(&self, cpu: f64, net_latency: u64, io_load: u64) -> Result<String> {
         let state = json!({
             "cpu": cpu,
             "net_latency": net_latency,
             "io_load": io_load,
-            "height": height
         });
 
         let prompt = format!(

@@ -31,4 +31,4 @@ La ISO è verificata su QEMU x86_64 con boot seriale. Non è una distro general-
 
 ## Stato
 
-Il runtime è pronto per sviluppo e staging. Il bridge LLM, il deployment systemd e l’integrazione HighCoin in ambiente reale richiedono configurazione specifica del deployment e restano soggetti alle milestone successive.
+Il runtime è pronto per sviluppo e staging. Il bridge LLM e il deployment systemd richiedono configurazione specifica dell’ambiente e restano soggetti alle milestone successive.

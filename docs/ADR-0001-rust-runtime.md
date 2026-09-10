@@ -12,7 +12,7 @@ ZDOS Organism nasce come prototipo modulare con componenti bio-ispirati, bridge 
 
 Il runtime canonico è un workspace Cargo Rust. `organism-bin` espone la superficie operativa; `cortex` gestisce decisioni e feedback; `zlang` e `zvm` implementano il linguaggio interno e la sua esecuzione; `core` e `memzdos` forniscono primitive condivise. Python e Shell possono restare strumenti di laboratorio, ma non devono diventare dipendenze implicite dell’esecuzione Rust.
 
-La toolchain è dichiarata in `rust-toolchain.toml`. Ogni cambiamento deve superare format, Clippy e test nella CI. I bridge remoti, inclusi LLM e HighCoin, sono opzionali rispetto al percorso locale e devono essere configurati dall’ambiente di deployment.
+La toolchain è dichiarata in `rust-toolchain.toml`. Ogni cambiamento deve superare format, Clippy e test nella CI. I bridge remoti, incluso LLM, sono opzionali rispetto al percorso locale e devono essere configurati dall’ambiente di deployment.
 
 ## Conseguenze
 

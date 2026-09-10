@@ -72,10 +72,7 @@ impl Organism {
         let cpu_value = cpu();
         let net_value = net_latency();
         let io_value = io_load();
-        let height = block_height();
-        let diff = difficulty();
-        let mem = mempool();
-        println!("[ZDOS] sensors cpu={cpu_value:.2} net={net_value}ms io={io_value} h={height} diff={diff} mem={mem}");
+        println!("[ZDOS] sensors cpu={cpu_value:.2} net={net_value}ms io={io_value}");
         self.neuro.update(cpu_value, net_value, io_value);
         self.feedback.update(&self.neuro);
         BioComm::send(BioPacket {
@@ -83,7 +80,7 @@ impl Organism {
             signal: self.neuro.mood(),
             level: self.neuro.serotonin,
             priority: 2,
-            hint: "adapt difficulty and mutation".into(),
+            hint: "adapt system load and mutation".into(),
         });
         self.fitness_score = EvolutionEngine::fitness(cpu_value, io_value, net_value);
         fs::write(
@@ -92,8 +89,8 @@ impl Organism {
         )
         .context("impossibile salvare fitness")?;
         let mutated = MutationEngine::mutate(self.neuro.dopamine, self.feedback.mutation_rate);
-        let new_diff = EvolutionEngine::adjust_difficulty(
-            diff,
+        let adaptive_load = EvolutionEngine::adjust_load(
+            1.0,
             self.neuro.dopamine,
             self.neuro.cortisol,
             self.neuro.serotonin,
@@ -105,10 +102,10 @@ impl Organism {
             &mut self.feedback.mutation_rate,
         );
         println!(
-            "[ZDOS] fitness={:.3} mutation={mutated:.3} difficulty={new_diff:.3} interval={}s",
+            "[ZDOS] fitness={:.3} mutation={mutated:.3} load={adaptive_load:.3} interval={}s",
             self.fitness_score, self.feedback.loop_delay
         );
-        match self.cortex.decide(cpu_value, net_value, io_value, height) {
+        match self.cortex.decide(cpu_value, net_value, io_value) {
             Ok(action) => println!("[ZDOS] decision={action}"),
             Err(error) => eprintln!("[ZDOS] cortex error: {error}"),
         }

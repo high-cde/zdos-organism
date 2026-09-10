@@ -24,7 +24,7 @@ Il test CLI produce `result: 5.0`, con un programma composto da una dichiarazion
 
 ## Limiti noti
 
-La release non include ancora un endpoint LLM distribuito, un’unità systemd installabile in modo universale o un bridge HighCoin con rete reale configurato per produzione. Questi elementi restano nel perimetro delle successive milestone e richiedono parametri operativi e credenziali dell’ambiente di deployment.
+La release non include ancora un endpoint LLM distribuito o un’unità systemd installabile in modo universale. Questi elementi restano nel perimetro delle successive milestone e richiedono parametri operativi dell’ambiente di deployment.
 
 ## Installazione rapida
 
