@@ -6,6 +6,13 @@ Tutte le modifiche rilevanti del progetto sono registrate in questo documento. L
 
 Questa sezione raccoglie il lavoro successivo alla prima release foundation: telemetria strutturata, configurazione del servizio systemd, test di integrazione del cortex e documentazione del runtime ZLang.
 
+### Forgiatura Organism in ZLang
+
+- aggiunto il programma canonico `programs/organism/tick.zlang`;
+- collegato il feedback Rust al file ZLang versionato tramite `include_str!`;
+- documentati ABI numerico, capability allowlist e fallback local-only in `docs/ORGANISM_ZLANG.md`;
+- riallineato lo stato ecosistema alla struttura ZDOS/Zlang/Organism senza riferimenti a componenti esterni rimossi.
+
 ## [0.1.0-foundation] — 2026-08-25
 
 La prima release foundation rende il workspace Rust riproducibile e introduce un percorso end-to-end verificato tra ZLang, compiler e ZVM. La CLI supporta `--help`, `--version`, `--eval` e `--once`; il loop dell’organismo usa `ZDOS_LLM_URL` e `ZDOS_STATE_DIR` invece di percorsi hard-coded.

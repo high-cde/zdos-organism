@@ -1,7 +1,7 @@
 use crate::neuro::NeuroSignals;
 use std::collections::HashMap;
 
-const BIO_FEEDBACK_PROGRAM: &str = "if > cortisol 0.7 { 4010 } else if > dopamine 0.7 { 1100 } else if > serotonin 0.7 { 2030 } else { 2050 }";
+const BIO_FEEDBACK_PROGRAM: &str = include_str!("../../../programs/organism/tick.zlang");
 
 #[derive(Debug, Clone)]
 pub struct BioFeedback {
@@ -84,6 +84,13 @@ mod tests {
     fn maps_stress_to_slow_safe_feedback() {
         let value = feedback(0.8, 0.1, 0.1);
         assert_eq!((value.loop_delay, value.mutation_rate), (4, 0.01));
+    }
+
+    #[test]
+    fn uses_the_versioned_organism_zlang_program() {
+        assert!(BIO_FEEDBACK_PROGRAM.contains("cortisol"));
+        assert!(BIO_FEEDBACK_PROGRAM.contains("4010"));
+        assert!(BIO_FEEDBACK_PROGRAM.contains("2050"));
     }
 
     #[test]
