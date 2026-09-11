@@ -47,7 +47,7 @@ La logica omeostatica di `BioFeedback::update` è ora eseguita attraverso il per
 | `stable` | `serotonin > 0.7` | 2 s | 0.03 |
 | `neutral` | nessuna condizione precedente | 2 s | 0.05 |
 
-Il programma di riferimento è disponibile in [`zlang/examples/bio_feedback.zlang`](zlang/examples/bio_feedback.zlang). Rust mantiene il controllo dell’integrazione e un fallback deterministico nel caso in cui l’esecuzione della policy ZLang fallisca.
+Il programma canonico dell’organismo è versionato in [`programs/organism/tick.zlang`](programs/organism/tick.zlang). Rust mantiene il controllo dell’integrazione, valida il risultato bounded e usa un fallback deterministico nel caso in cui l’esecuzione della policy ZLang fallisca. Il contratto input/output e la capability allowlist sono descritti in [`docs/ORGANISM_ZLANG.md`](docs/ORGANISM_ZLANG.md).
 
 Per verificare il runtime:
 
@@ -164,7 +164,7 @@ Il repository è ora compilabile con Rust stabile e la CI verifica automaticamen
 - **[Roadmap](docs/wiki/Roadmap.md)** — milestone e criteri di completamento.
 - **[Changelog](CHANGELOG.md)** — cronologia delle modifiche.
 - **[Release notes v0.1.0](docs/RELEASE_NOTES_0.1.0.md)** — note della foundation release.
-- **[Ecosystem Status](docs/ECOSYSTEM-STATUS.md)** — ruolo, stato verificabile e integrazione con ZDOS Lab, Zlang e Z-CYBERCORE.
+- **[Ecosystem Status](docs/ECOSYSTEM-STATUS.md)** — ruolo, stato verificabile e integrazione con ZDOS e Zlang.
 
 ## 🚦 Stato pubblico
 

@@ -25,9 +25,8 @@ ZDOS_STATE_DIR=./var cargo run -p organism-bin -- --once
 
 ## Integrazione
 
-- **ZDOS Lab:** catalogo, manifest, policy e release gate.
-- **Zlang:** linguaggio e VM condivisi.
-- **Z-CYBERCORE:** piano operativo di sicurezza separato, non eseguito dal runtime senza policy.
+- **ZDOS:** catalogo, manifest, policy, Evidence Chain e release gate.
+- **Zlang:** linguaggio e VM del programma canonico dell’organismo.
 - **ZDOS Hub:** ingresso pubblico per repository, wiki, release e contribution flow.
 
 Non confondere la presenza nel catalogo dell’ecosistema con una prova di produzione: mantenere `FOUNDATION`, `EXPERIMENTAL` o `CONFIGURABLE` finché non esiste un’evidenza riproducibile.

@@ -19,7 +19,7 @@ Il repository è collegato alla visione **ZDOS / Z-GENESIS**, dove ogni componen
 
 ## Contratto operativo
 
-La CLI deve supportare un’esecuzione locale deterministica di ZLang con `--eval` e un battito osservabile dell’organismo con `--once`. Il servizio LLM è opzionale per la verifica del runtime e viene configurato con `ZDOS_LLM_URL`; lo stato locale usa `ZDOS_STATE_DIR`. Nessuna di queste configurazioni deve contenere segreti versionati.
+La CLI deve supportare un’esecuzione locale deterministica di ZLang con `--eval` e un battito osservabile dell’organismo con `--once`. Il feedback canonico è versionato in `programs/organism/tick.zlang`; Rust fornisce lo snapshot, valida il risultato e applica soltanto valori bounded. Il servizio LLM è opzionale per la verifica del runtime e viene configurato con `ZDOS_LLM_URL`; lo stato locale usa `ZDOS_STATE_DIR`. Nessuna di queste configurazioni deve contenere segreti versionati.
 
 ## Qualità e manutenzione
 
