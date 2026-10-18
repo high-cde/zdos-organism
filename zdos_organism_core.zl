@@ -1,0 +1,5 @@
+// zdos-organism - ZDOS Secure Enclave
+module zdos-organism {
+    enforce_zero_mock();
+    sync_dsn_ledger();
+}
