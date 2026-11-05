@@ -25,3 +25,5 @@ fitness.txt
 # Generated site/build output
 /public/
 /site/.build/
+# zdos-dsn-code-align v1: virtualenv e cache
+zdos-llm/
